@@ -1,0 +1,52 @@
+<div class="manage-list">
+
+    <h1 class="text-center">List meals</h1>
+    <button class="btn btn-success float-right margin-bottom" (click)="addNew()">Add New</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Meal</th>
+                <th>Count</th>
+                <th>Actions </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of data; let index = index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.meal }}</td>
+                <td>{{ item.count }}</td>
+                <td>
+                    <a (click)="editMeal(index)">Edit</a> | <a (click)="openTemplateDelete(index)">Delete</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+<ng-template #template>
+    <app-modal (closeModal)="closeModal()" [title]="isEdit ? 'Edit meal' : 'Add new'">
+        <form>
+        <div class="form-group margin-bottom">
+            <p *ngIf="!isEdit">Input the meal name will count</p>
+            <input class="form-control" [formControl]="meal" />
+            <p *ngIf="isEdit">The count is {{data[indexActive].count}}</p>
+        </div>
+
+        <button class="btn btn-success float-right margin-bottom" (click)="saveData()"> {{ isEdit ? 'Update': 'Add' }}</button>
+    </form>
+    </app-modal>
+</ng-template>
+
+<ng-template #templateDelete>
+    <app-modal (closeModal)="closeModal()" title="Delete">
+        <div class="form-group margin-bottom">
+            <label>Are you want to delete <strong>{{data[indexActive].meal}}</strong> with the count is
+                {{data[indexActive].count}}?</label>
+        </div>
+        <button class="btn btn-success float-right margin-bottom" (click)="deleteMeal()">Delete</button>
+    </app-modal>
+</ng-template>
